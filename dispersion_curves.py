@@ -49,7 +49,7 @@ import glob
 import os
 
 # parsing configuration file to import dir of cross-corr results
-from pysismo.psconfig import CROSSCORR_DIR
+from pysismo.psconfig import CROSSCORR_DIR, MINDIST
 
 # loading cross-correlations (looking for *.pickle files in dir *CROSSCORR_DIR*)
 flist = sorted(glob.glob(os.path.join(CROSSCORR_DIR, 'xcorr*.pickle*')))
@@ -99,4 +99,4 @@ for pickle_file in pickle_files:
     #
     # See other options in the docstring of the function.
 
-    xc.FTANs(suffix=suffix, whiten=False, normalize_ampl=True, logscale=True)
+    xc.FTANs(suffix=suffix, whiten=False, normalize_ampl=True, logscale=True, mindist=MINDIST)

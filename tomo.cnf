@@ -175,6 +175,9 @@ WINDOW_FREQ = 0.0002                ; freq window (Hz) to smooth ampl spectrum
 PERIOD_BANDS = [[4, 7], [7, 15], [10, 22], [15, 30], [20, 35]]
 # (these bands focus on periods ~5, 10, 15, 20, 25 seconds)
 
+# FTAN is not performed if station distance is less than MINDIST
+MINDIST = 100.0
+
 # default parameters to define the signal and noise windows used to
 # estimate the SNR:
 # - the signal window is defined according to a min and a max velocity as:

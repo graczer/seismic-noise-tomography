@@ -147,6 +147,8 @@ CROSSCORR_TMAX = config.getfloat('cross-correlation', 'CROSSCORR_TMAX')
 # - estimate min spectral SNR, in FTANs()
 PERIOD_BANDS = json.loads(config.get('FTAN', 'PERIOD_BANDS'))
 
+MINDIST = config.getfloat('FTAN', 'MINDIST')
+
 # default parameters to define the signal and noise windows used to
 # estimate the SNR:
 # - the signal window is defined according to a min and a max velocity as:
