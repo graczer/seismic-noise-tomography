@@ -44,7 +44,7 @@ from psconfig import (
     SIGNAL_WINDOW_VMIN, SIGNAL_WINDOW_VMAX, SIGNAL2NOISE_TRAIL, NOISE_WINDOW_SIZE,
     RAWFTAN_PERIODS, CLEANFTAN_PERIODS, FTAN_VELOCITIES, FTAN_ALPHA, STRENGTH_SMOOTHING,
     USE_INSTANTANEOUS_FREQ, MAX_RELDIFF_INST_NOMINAL_PERIOD, MIN_INST_PERIOD,
-    HALFWINDOW_MEDIAN_PERIOD, MAX_RELDIFF_INST_MEDIAN_PERIOD, BBOX_LARGE, BBOX_SMALL)
+    HALFWINDOW_MEDIAN_PERIOD, MAX_RELDIFF_INST_MEDIAN_PERIOD, BBOX_LARGE, BBOX_SMALL, MAXPERIOD_FACTOR)
 
 # ========================
 # Constants and parameters
@@ -614,7 +614,7 @@ class CrossCorrelation:
             xy = (t, ylim[0] + 0.1 * (ylim[1] - ylim[0]))
             axlist[0].annotate(s='{} km/s'.format(v), xy=xy, xytext=xy,
                                horizontalalignment=align, fontsize=8,
-                               bbox={'color': 'k', 'facecolor': 'white'})
+                               bbox={'color': 'white', 'facecolor': 'black'})
 
         # noise window
         axlist[0].fill_between(x=tnoise, y1=[ylim[1], ylim[1]],
@@ -629,7 +629,7 @@ class CrossCorrelation:
                        s="Original data, SNR = {:.1f}".format(float(SNR)),
                        fontsize=9,
                        horizontalalignment='right',
-                       bbox={'color': 'k', 'facecolor': 'white'})
+                       bbox={'color': 'white', 'facecolor': 'black'})
 
         # formatting axes
         axlist[0].set_xlim(xlim)
@@ -677,7 +677,7 @@ class CrossCorrelation:
                     s="{} - {} s, SNR = {:.1f}".format(tmin, tmax, SNR),
                     fontsize=9,
                     horizontalalignment='right',
-                    bbox={'color': 'k', 'facecolor': 'white'})
+                    bbox={'color': 'white', 'facecolor': 'black'})
 
             if lastplot:
                 # adding label to signalwindows
@@ -686,7 +686,7 @@ class CrossCorrelation:
                         s="Signal window",
                         horizontalalignment='center',
                         fontsize=8,
-                        bbox={'color': 'k', 'facecolor': 'white'})
+                        bbox={'color': 'white', 'facecolor': 'black'})
 
                 # adding label to noise windows
                 ax.text(x=sum(tnoise) / 2,
@@ -694,7 +694,7 @@ class CrossCorrelation:
                         s="Noise window",
                         horizontalalignment='center',
                         fontsize=8,
-                        bbox={'color': 'k', 'facecolor': 'white'})
+                        bbox={'color': 'white', 'facecolor': 'black'})
 
             # formatting axes
             ax.set_xlim(xlim)
@@ -1275,7 +1275,7 @@ class CrossCorrelation:
         ax.plot(cleanvg.periods, cleanvg.v, fmt, color='black',
                 lw=2, label='clean disp curve')
         # plotting cut-off period
-        cutoffperiod = self.dist() / 12.0
+        cutoffperiod = self.dist() * MAXPERIOD_FACTOR 
         ax.plot([cutoffperiod, cutoffperiod], ylim, color='grey')
 
         # setting legend and initial extent
@@ -1283,7 +1283,7 @@ class CrossCorrelation:
         x = (xlim[0] + xlim[1]) / 2.0
         y = ylim[0] + 0.05 * (ylim[1] - ylim[0])
         ax.text(x, y, "Raw FTAN", fontsize=12,
-                bbox={'color': 'k', 'facecolor': 'white', 'lw': 0.5},
+                bbox={'color': 'white', 'facecolor': 'black', 'lw': 0.5},
                 horizontalalignment='center',
                 verticalalignment='center')
         ax.set_xlim(xlim)
@@ -1335,11 +1335,11 @@ class CrossCorrelation:
         x = (xlim[0] + xlim[1]) / 2.0
         y = ylim[0] + 0.05 * (ylim[1] - ylim[0])
         ax.text(x, y, "Clean FTAN", fontsize=12,
-                bbox={'color': 'k', 'facecolor': 'white', 'lw': 0.5},
+                bbox={'color': 'white', 'facecolor': 'black', 'lw': 0.5},
                 horizontalalignment='center',
                 verticalalignment='center')
         # plotting cut-off period
-        cutoffperiod = self.dist() / 12.0
+        cutoffperiod = self.dist() * MAXPERIOD_FACTOR 
         ax.plot([cutoffperiod, cutoffperiod], ylim, color='grey')
         # setting initial extent
         ax.set_xlim(xlim)
@@ -1730,7 +1730,8 @@ class CrossCorrelationCollection(AttribDict):
                     xcplot = xcplot.whiten(inplace=False)
 
                 # color
-                color = cc[ipair % len(cc)]
+                # color = cc[ipair % len(cc)]
+                color = 'black'
 
                 # normalizing factor
                 nrm = max(abs(xcplot.dataarray)) if norm else 1.0
@@ -1738,7 +1739,7 @@ class CrossCorrelationCollection(AttribDict):
                 # plotting
                 xarray = xcplot.timearray
                 yarray = xcplot.dist() + corr2km * xcplot.dataarray / nrm
-                plt.plot(xarray, yarray, color=color)
+                plt.plot(xarray, yarray, color=color, alpha=0.5)
                 if xlim:
                     plt.xlim(xlim)
 
@@ -1777,9 +1778,9 @@ class CrossCorrelationCollection(AttribDict):
                 bbox = {'color': color, 'facecolor': 'white', 'alpha': 0.9}
                 arrowprops = {'arrowstyle': "-", 'relpos': relpos, 'color': color}
 
-                plt.annotate(s=s, xy=xyarrow, xytext=xytext, fontsize=9,
-                             color='k', horizontalalignment=align,
-                             bbox=bbox, arrowprops=arrowprops)
+                # plt.annotate(s=s, xy=xyarrow, xytext=xytext, fontsize=9,
+                #              color='k', horizontalalignment=align,
+                #              bbox=bbox, arrowprops=arrowprops)
 
             plt.grid()
             plt.xlabel('Time (s)')
