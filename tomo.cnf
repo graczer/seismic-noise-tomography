@@ -71,9 +71,9 @@
 # So, there is one sub-directory per month, and inside it, one miniseed
 # file per month and per station.
 
-MSEED_DIR = ../IRIS data
-STATIONXML_DIR = ../StationXML files
-DATALESS_DIR = ../Dataless seed
+MSEED_DIR = ../2016_full
+STATIONXML_DIR = ../seed
+DATALESS_DIR = ../seed
 
 CROSSCORR_DIR = ./output/cross-correlation  ; dir of cross-correlation results
 FTAN_DIR = ./output/FTAN                    ; dir of FTAN results (including dispersion curves)
@@ -82,8 +82,8 @@ DEPTHMODELS_DIR = ./output/1D models        ; dir of 1D depth inversion results
 
 # dir of the (binaries of the) Computer Programs in Seismology, used
 # to calculate a theoretical dispersion curve given a 1D model
-# (leave empty if you have not installed them)
-COMPUTER_PROGRAMS_IN_SEISMOLOGY_DIR = /home/bruno/Data/Recherche/Utilitaires/Programmes/Computer Programs in Seismology/bin
+# (set to null if you have not installed them)
+COMPUTER_PROGRAMS_IN_SEISMOLOGY_DIR = null 
 
 
 #=====
@@ -107,9 +107,9 @@ COMPUTER_PROGRAMS_IN_SEISMOLOGY_DIR = /home/bruno/Data/Recherche/Utilitaires/Pro
 #   '\' will be replaced with line breaks), and the second field contains
 #   the label's angle.
 #
-# Leave path empty if you don't have the corresponding shapefile.
+# You can set any of these files to ``null``.
 
-COAST_SHP = ./shapefiles/SouthAmericaCoasts.shp
+COAST_SHP = ./shapefiles/central_europe.shp
 TECTO_SHP = ./shapefiles/SouthAmericaTectonicElements.shp
 TECTO_LABELS = ./shapefiles/SouthAmericaTectonicElementsLabels.shp
 
@@ -130,26 +130,27 @@ TECTO_COLORS = {
 # bounding box of (large) global maps and (small) inset maps
 # (min lon, max lon, min lat, max lat in JSON lists)
 
-BBOX_LARGE = [-70, -30, -32, 8]
-BBOX_SMALL = [-65, -35, -29, 1]
+BBOX_LARGE = [14, 21, 45, 50]
+BBOX_SMALL = [14, 21, 45, 50]
 
 
 #==================
 [cross-correlation]
 #==================
 
-USE_DATALESSPAZ = False             ; use dataless files to remove instrument response?
-USE_STATIONXML = True               ; use stationXML files to remove instrument response?
+USE_DATALESSPAZ = True             ; use dataless files to remove instrument response?
+USE_STATIONXML = False               ; use stationXML files to remove instrument response?
 
-FIRSTDAY = 1/1/1996                 ; first day of cross-correlation (d/m/y)
-LASTDAY = 31/3/2012                 ; last day of cross-correlation (d/m/y)
-MINFILL = 0.99                      ; minimum data fill within day
+FIRSTDAY = 1/1/2016                 ; first day of cross-correlation (d/m/y)
+LASTDAY = 31/12/2016                ; last day of cross-correlation (d/m/y)
+MINFILL = 0.90                      ; minimum data fill within day
 
 CROSSCORR_STATIONS_SUBSET = null    ; subset of stations (null if all, else JSON list)
-CROSSCORR_TMAX = 2000               ; max time window (s) for cross-correlation
+#CROSSCORR_STATIONS_SUBSET = ["EGYH","MORH"] 
+CROSSCORR_TMAX = 300               ; max time window (s) for cross-correlation
 CROSSCORR_SKIPLOCS = ["50"]         ; locations to skip (JSON list)
 
-PERIODMIN = 3.0                     ; bandpass parameters
+PERIODMIN = 2.0                     ; bandpass parameters
 PERIODMAX = 60.0
 CORNERS = 2
 ZEROPHASE = True
@@ -181,16 +182,16 @@ PERIOD_BANDS = [[4, 7], [7, 15], [10, 22], [15, 30], [20, 35]]
 # - the noise window has a fixed size and starts after a fixed trailing
 #   time from the end of the signal window
 
-SIGNAL_WINDOW_VMIN = 2.0
-SIGNAL_WINDOW_VMAX = 4.0
-SIGNAL2NOISE_TRAIL = 500.0
-NOISE_WINDOW_SIZE = 500.0
+SIGNAL_WINDOW_VMIN = 1.8
+SIGNAL_WINDOW_VMAX = 3.6
+SIGNAL2NOISE_TRAIL = 20.0
+NOISE_WINDOW_SIZE = 50.0
 
 # periods and velocities of the FTAN: start, stop and step (JSON lists)
 
-RAWFTAN_PERIODS_STARTSTOPSTEP = [3.0, 45.1, 1.0]
-CLEANFTAN_PERIODS_STARTSTOPSTEP = [3.0, 45.1, 1.0]
-FTAN_VELOCITIES_STARTSTOPSTEP = [2.0, 5.51, 0.01]
+RAWFTAN_PERIODS_STARTSTOPSTEP = [1.0, 45.1, 1.0]
+CLEANFTAN_PERIODS_STARTSTOPSTEP = [1.0, 45.1, 1.0]
+FTAN_VELOCITIES_STARTSTOPSTEP = [1.8, 4.01, 0.01]
 
 # default width parameter of the narrow Gaussian bandpass filters
 # applied in the FTAN. The bandpass filters take the form:
@@ -199,7 +200,7 @@ FTAN_VELOCITIES_STARTSTOPSTEP = [2.0, 5.51, 0.01]
 #
 # where f is the frequency and f0 the center frequency of the filter.
 
-FTAN_ALPHA = 20
+FTAN_ALPHA = 10.0
 
 # relative strength of the smoothing term in the penalty function that
 # the dispersion curve seeks to minimize
@@ -239,27 +240,28 @@ MINSPECTSNR = 7             ; min spectral SNR to retain velocity
 MINSPECTSNR_NOSDEV = 15     ; min spectral SNR to retain velocity if no std dev
 MAXSDEV = 0.1               ; max sdt dev (km/s) to retain velocity
 MINNBTRIMESTER = 4          ; min nb of trimesters to estimate std dev
-MAXPERIOD_FACTOR = 0.08333  ; max period = *MAXPERIOD_FACTOR* * pair distance
+#MAXPERIOD_FACTOR = 0.08333  ; max period = *MAXPERIOD_FACTOR* * pair distance
+MAXPERIOD_FACTOR = 0.12  ; max period = *MAXPERIOD_FACTOR* * pair distance
 
 # Default internode spacing of grid
 
-LONSTEP = 1
-LATSTEP = 1
+LONSTEP = 0.2
+LATSTEP = 0.2
 
 # Default correlation length of the smoothing kernel:
 # S(r,r') = exp[-|r-r'|**2 / (2 * correlation_length**2)]
 
-CORRELATION_LENGTH = 150
+CORRELATION_LENGTH = 20
 
 # Default strength of the spatial smoothing term (alpha) and the
 # weighted norm penalization term (beta) in the penalty function
 
-ALPHA = 400
-BETA = 200
+ALPHA = 100
+BETA = 50
 
 # Default parameter in the damping factor of the norm penalization term,
 # such that the norm is weighted by exp(- lambda_*path_density)
 # With a value of 0.15, penalization becomes strong when path density < ~20
 # With a value of 0.30, penalization becomes strong when path density < ~10
 
-LAMBDA = 0.3
+LAMBDA = 0.05
