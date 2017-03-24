@@ -1045,6 +1045,32 @@ class VelocityMap:
             ttobs = np.array(self.dobs).flatten() + ttref  # observed travel-times
             return diffs / ttobs
 
+    def variance_reduction(self, verbose=True):
+        """
+        Returns the variance reduction 
+        """
+        diffs = self.traveltime_residuals()
+        variance_0 = np.mean(np.square(np.array(self.dobs).flatten()))
+        variance_m = np.mean(np.square(diffs))
+        variance_reduction = 100.0* (variance_0 - variance_m) / variance_0 
+        if verbose:
+            print 'variance reduction =', variance_reduction 
+        return variance_reduction
+
+    def traveltime_residuals_L2(self):
+        """
+        Returns the L2 norm of traveltime residuals 
+        """
+        diffs = self.traveltime_residuals()
+        return np.sqrt(np.sum(np.square(diffs)))
+
+    def velocity_residuals_L2(self):
+        """
+        Returns the L2 norm of velocity residuals 
+        """
+        v = self.grid.to_2D_array(self.v0 / (1 + self.mopt))
+        return np.sqrt(np.sum(np.square(v-self.v0)))
+
     def velocity_residuals(self, relative=False):
         """
         Returns the [relative] differences between observed-predicted

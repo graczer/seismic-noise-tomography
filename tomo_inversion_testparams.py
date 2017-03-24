@@ -68,13 +68,13 @@ from matplotlib.backends.backend_pdf import PdfPages
 import itertools as it
 
 # inversion parameters to vary
-PERIODS = [7.0]
-GRID_STEPS = [0.1]
+PERIODS = [7, 10, 15, 20, 25]
+GRID_STEPS = [0.05]
 MINPECTSNRS = [7.0]
-CORR_LENGTHS = [10, 20, 50]
-ALPHAS = [50, 100]
-BETAS = [10, 50, 100]
-LAMBDAS = [0.05]
+CORR_LENGTHS = [10]
+ALPHAS = [100]
+BETAS = [50]
+LAMBDAS = [0.1]
 
 # parsing configuration file to import dirs
 from pysismo.psconfig import FTAN_DIR, TOMO_DIR

@@ -268,3 +268,33 @@ BETA = 50
 # With a value of 0.30, penalization becomes strong when path density < ~10
 
 LAMBDA = 0.05
+
+# ==========
+[tradeoff]
+# ==========
+
+TRADEOFF_PERIOD = 7.0
+TRADEOFF_GRID_STEP = 0.1
+TRADEOFF_MINPECTSNR = 7.0
+
+TRADEOFF_ALPHA = 100
+TRADEOFF_CORR_LENGTH = 10
+TRADEOFF_BETA = 50
+TRADEOFF_LAMBDA = 0.05
+
+# tradeoff computation for alpha
+COMPUTE_TRADEOFF_ALPHA = True
+TRADEOFF_ALPHAS = [15, 30, 60, 100, 200, 400, 500, 1000, 2000]
+
+# tradeoff computation for correlation length 
+COMPUTE_TRADEOFF_CORR_LENGTH = True
+TRADEOFF_CORR_LENGTHS = [1,2,5,10,20,50,100] 
+
+# tradeoff computation for beta
+COMPUTE_TRADEOFF_BETA = True
+TRADEOFF_BETAS = [1, 10, 20, 50, 100, 200, 500] 
+
+# tradeoff computation for lambda
+COMPUTE_TRADEOFF_LAMBDA = True
+TRADEOFF_LAMBDAS = [0.005, 0.01, 0.05, 0.1, 0.2, 0.5, 1.0, 2.0, 5.0]  
+

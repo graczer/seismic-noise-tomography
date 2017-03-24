@@ -242,3 +242,28 @@ BETA = config.getfloat('tomography', 'BETA')
 # With a value of 0.15, penalization becomes strong when path density < ~20
 # With a value of 0.30, penalization becomes strong when path density < ~10
 LAMBDA = config.getfloat('tomography', 'LAMBDA')
+
+# --------------------------------
+# Tradeoff parameters 
+# --------------------------------
+
+TRADEOFF_PERIOD = config.getfloat('tradeoff', 'TRADEOFF_PERIOD')
+TRADEOFF_GRID_STEP = config.getfloat('tradeoff', 'TRADEOFF_GRID_STEP')
+TRADEOFF_MINPECTSNR = config.getfloat('tradeoff', 'TRADEOFF_MINPECTSNR')
+
+TRADEOFF_ALPHA = config.getfloat('tradeoff', 'TRADEOFF_ALPHA')
+TRADEOFF_CORR_LENGTH = config.getfloat('tradeoff', 'TRADEOFF_CORR_LENGTH')
+TRADEOFF_BETA = config.getfloat('tradeoff', 'TRADEOFF_BETA')
+TRADEOFF_LAMBDA = config.getfloat('tradeoff', 'TRADEOFF_LAMBDA')
+
+COMPUTE_TRADEOFF_ALPHA = config.getboolean('tradeoff', 'COMPUTE_TRADEOFF_ALPHA')
+TRADEOFF_ALPHAS = json.loads(config.get('tradeoff', 'TRADEOFF_ALPHAS'))
+
+COMPUTE_TRADEOFF_CORR_LENGTH  = config.getboolean('tradeoff', 'COMPUTE_TRADEOFF_CORR_LENGTH')
+TRADEOFF_CORR_LENGTHS = json.loads(config.get('tradeoff', 'TRADEOFF_CORR_LENGTHS'))
+
+COMPUTE_TRADEOFF_BETA  = config.getboolean('tradeoff', 'COMPUTE_TRADEOFF_BETA')
+TRADEOFF_BETAS = json.loads(config.get('tradeoff', 'TRADEOFF_BETAS'))
+
+COMPUTE_TRADEOFF_LAMBDA = config.getboolean('tradeoff', 'COMPUTE_TRADEOFF_LAMBDA')
+TRADEOFF_LAMBDAS = json.loads(config.get('tradeoff', 'TRADEOFF_LAMBDAS'))
