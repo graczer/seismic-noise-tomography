@@ -8,6 +8,7 @@ import itertools as it
 import numpy as np
 from scipy.optimize import curve_fit
 from scipy.interpolate import interp1d
+from scipy.spatial import ConvexHull
 import os
 import glob
 import pickle
@@ -17,7 +18,6 @@ from matplotlib import gridspec
 from matplotlib.colors import ColorConverter
 import shutil
 from inspect import getargspec
-
 
 # todo: discard measurments if too different from trimester velocities (see BB15B-SPB)
 
@@ -1511,6 +1511,38 @@ class VelocityMap:
         for x, y, label in zip(xlist, ylist, labels):
             ax.text(x, y, label, ha='center', va='bottom', fontsize=10, weight='bold')
 
+    def export_to_gmt(self,outdir):
+        with open(outdir+'/vel_%02d.xyz' % self.period,'w') as f:
+            vel = self.grid.to_2D_array(self.v0 / (1 + self.mopt))
+            for ix,x in enumerate(self.grid.xarray()):
+                for iy,y in enumerate(self.grid.yarray()):
+                    f.write('%f %f %f\n' % (x,y,vel[ix][iy]))
+
+        with open(outdir+'/paths_%02d.xy' % self.period,'w') as f:
+            for path in self.paths:
+                for elem in path:
+                    f.write('%f %f\n' % (elem[0],elem[1]))
+                f.write('>\n')
+        
+        station_coords = set()
+        with open(outdir+'/stations_%02d.xy' % self.period,'w') as f:
+            for curve in self.disp_curves:
+                station_coords.add(curve.station1.coord)
+                station_coords.add(curve.station2.coord)
+            for elem in station_coords:
+                f.write('%f %f\n' % (elem)) 
+
+        with open(outdir+'/convex_hull_%02d.xy' % self.period,'w') as f:
+            station_coords = np.array(list(station_coords))
+            hull = ConvexHull(station_coords)
+            for vertex in hull.vertices:
+                f.write('%f %f\n' % (station_coords[vertex][0], station_coords[vertex][1])) 
+
+        with open(outdir+'/resolution_%02d.xyz' % self.period,'w') as f:
+            res = self.grid.to_2D_array(self.Rradius)
+            for ix,x in enumerate(self.grid.xarray()):
+                for iy,y in enumerate(self.grid.yarray()):
+                    f.write('%f %f %f\n' % (x,y,res[ix][iy]))
 
 def pathdensity_colormap(dmax):
     """

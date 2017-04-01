@@ -68,8 +68,9 @@ from matplotlib.backends.backend_pdf import PdfPages
 import itertools as it
 
 # inversion parameters to vary
-PERIODS = [7, 10, 15, 20, 25]
-GRID_STEPS = [0.05]
+#PERIODS = [7, 10, 15, 20, 25]
+PERIODS = range(7,26) 
+GRID_STEPS = [0.1]
 MINPECTSNRS = [7.0]
 CORR_LENGTHS = [10]
 ALPHAS = [100]
@@ -113,6 +114,13 @@ for pickle_file in pickle_files:
         shutil.copyfile(pdfname, pdfname + '~')
     pdf = PdfPages(pdfname)
 
+    gmt_dir = pdfname[:-4]
+    try:
+        shutil.rmtree(gmt_dir)
+    except:
+        pass
+    os.makedirs(gmt_dir)
+
     # performing tomographic inversions, systematically
     # varying the inversion parameters
     param_lists = it.product(PERIODS, GRID_STEPS, MINPECTSNRS, CORR_LENGTHS,
@@ -148,6 +156,8 @@ for pickle_file in pickle_files:
                                alpha=alpha,
                                beta=beta,
                                lambda_=lambda_)
+
+        v.export_to_gmt(gmt_dir)
 
         # creating a figure summing up the results of the inversion:
         # - 1st panel = map of velocities or velocity anomalies

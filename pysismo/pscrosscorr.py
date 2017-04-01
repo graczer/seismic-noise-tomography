@@ -1393,6 +1393,11 @@ class CrossCorrelation:
 
         # exporting to file
         if outfile:
+            outdir = '/'.join(outfile.split('/')[:-1])
+            try:
+                os.makedirs(outdir)
+            except:
+                pass
             fig.savefig(outfile, dpi=300, transparent=True)
 
         if showplot:
@@ -2071,6 +2076,7 @@ class CrossCorrelationCollection(AttribDict):
                                    vmin=vmin, vmax=vmax,
                                    signal2noise_trail=signal2noise_trail,
                                    noise_window_size=noise_window_size,
+                                   outfile=outputpath+'_plots/'+s1+'_'+s2+'.png',
                                    **kwargs)
                 pdf.savefig(fig)
                 plt.close()
