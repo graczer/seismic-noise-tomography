@@ -53,6 +53,21 @@ for x, r, g, b in zip(values, reds, greens, blues):
     cdict.setdefault('blue', []).append((v, b, b))
 CMAP_SEISMIC = LinearSegmentedColormap('customseismic', cdict)
 
+# custom color map for checkerboard tests
+# --------------------------------------
+c = ColorConverter()
+colors = ['red', 'white', 'white', 'blue']
+values = [-1.0, -0.025, 0.025, 1.0]
+rgblist = [c.to_rgb(s) for s in colors]
+reds, greens, blues = zip(*rgblist)
+cdict = {}
+for x, r, g, b in zip(values, reds, greens, blues):
+    v = (x - min(values)) / (max(values) - min(values))
+    cdict.setdefault('red', []).append((v, r, r))
+    cdict.setdefault('green', []).append((v, g, g))
+    cdict.setdefault('blue', []).append((v, b, b))
+CMAP_CHECKERBOARD = LinearSegmentedColormap('customcheckerboard', cdict)
+
 # custom color map for spatial resolution
 # ---------------------------------------
 colors = ['black', 'red', 'yellow', 'green', 'white']
@@ -1429,7 +1444,7 @@ class VelocityMap:
         if fig:
             fig.show()
 
-    def plot_checkerboard(self, vmid, vmin, vmax, squaresize, axes=None, xsize=10,
+    def plot_checkerboard(self, vmid, vmin, vmax, squaresize, outfile=None, gmt_export=False, axes=None, xsize=10,
                           **kwargs):
         """
         Plots checkboard model and reconstructed checkerboard
@@ -1462,7 +1477,7 @@ class VelocityMap:
                             origin='bottom', extent=extent,
                             interpolation='bicubic',
                             vmin=vmin, vmax=vmax,
-                            cmap=CMAP_SEISMIC)
+                            cmap=CMAP_CHECKERBOARD)
         ims.append(im)
 
         # reconstructed checkerboard
@@ -1473,7 +1488,7 @@ class VelocityMap:
                             interpolation='bicubic',
                             vmin=-np.abs(dv).max(),
                             vmax=np.abs(dv).max(),
-                            cmap=CMAP_SEISMIC)
+                            cmap=CMAP_CHECKERBOARD)
         ims.append(im)
 
         for ax, im in zip(axes, ims):
@@ -1491,7 +1506,27 @@ class VelocityMap:
             ax.set_xlim(bbox[:2])
             ax.set_ylim(bbox[2:])
 
-        if fig:
+        if outfile:
+            outdir = '/'.join(outfile.split('/')[:-1])
+            try:
+                shutil.rmtree(outdir)
+            except:
+                pass
+            os.makedirs(outdir)
+            fig.savefig(outfile, dpi=300, transparent=True)
+
+            if gmt_export:
+                gmt_filename_postfix = outfile.split('/')[-1][-13:-4] + '.xyz'
+                with open(outdir+ '/checkerboard_model_' + gmt_filename_postfix,'w') as f:
+                    for ix,x in enumerate(self.grid.xarray()):
+                        for iy,y in enumerate(self.grid.yarray()):
+                            f.write('%f %f %f\n' % (x,y,a[ix][iy]))
+
+                with open(outdir+ '/checkerboard_result_' + gmt_filename_postfix,'w') as f:
+                    for ix,x in enumerate(self.grid.xarray()):
+                        for iy,y in enumerate(self.grid.yarray()):
+                            f.write('%f %f %f\n' % (x,y,dv[ix][iy]))
+        else: 
             fig.show()
 
     def _plot_stations(self, ax, stationlabel):

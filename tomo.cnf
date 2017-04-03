@@ -248,13 +248,13 @@ MAXPERIOD_FACTOR = 0.12  ; max period = *MAXPERIOD_FACTOR* * pair distance
 
 # Default internode spacing of grid
 
-LONSTEP = 0.2
-LATSTEP = 0.2
+LONSTEP = 0.1
+LATSTEP = 0.1
 
 # Default correlation length of the smoothing kernel:
 # S(r,r') = exp[-|r-r'|**2 / (2 * correlation_length**2)]
 
-CORRELATION_LENGTH = 20
+CORRELATION_LENGTH = 10
 
 # Default strength of the spatial smoothing term (alpha) and the
 # weighted norm penalization term (beta) in the penalty function
@@ -298,3 +298,15 @@ TRADEOFF_BETAS = [1, 10, 20, 50, 100, 200, 500]
 COMPUTE_TRADEOFF_LAMBDA = True
 TRADEOFF_LAMBDAS = [0.005, 0.01, 0.05, 0.1, 0.2, 0.5, 1.0, 2.0, 5.0]  
 
+# ==========
+[checkerboard]
+# ==========
+
+CHECKERBOARD_VMID = 2.4
+CHECKERBOARD_VMIN = 2.0
+CHECKERBOARD_VMAX = 2.8
+
+CHECKERBOARD_PERIODS = [15]
+CHECKERBOARD_SQUARESIZES = [40]
+
+CHECKERBOARD_EXPORT_TO_GMT = True
