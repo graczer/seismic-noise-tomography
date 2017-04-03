@@ -5,7 +5,7 @@ import pysismo
 
 from pysismo.psconfig import FTAN_DIR, TOMO_DIR,\
 CHECKERBOARD_VMID, CHECKERBOARD_VMIN, CHECKERBOARD_VMAX,\
-CHECKERBOARD_PERIODS, CHECKERBOARD_SQUARESIZES
+CHECKERBOARD_PERIODS, CHECKERBOARD_SQUARESIZES, CHECKERBOARD_EXPORT_TO_GMT
 
 # selecting dispersion curves
 flist = sorted(glob.glob(os.path.join(FTAN_DIR, 'FTAN*.pickle*')))
@@ -36,4 +36,4 @@ for pickle_file in pickle_files:
                                     CHECKERBOARD_VMAX,
                                     squaresize,
                                     outfile=TOMO_DIR+'/checkerboard_'+pickle_file.split('/')[-1][5:-7]+'/'+\
-                                    'checkerboard_%02ds_%03dkm.png' % (period,squaresize))
+                                    'checkerboard_%02ds_%03dkm.png' % (period,squaresize), gmt_export=CHECKERBOARD_EXPORT_TO_GMT)
