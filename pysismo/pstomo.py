@@ -1559,16 +1559,16 @@ class VelocityMap:
                     f.write('%f %f\n' % (elem[0],elem[1]))
                 f.write('>\n')
         
-        station_coords = set()
+        station_params = set()
         with open(outdir+'/stations_%02d.xy' % self.period,'w') as f:
             for curve in self.disp_curves:
-                station_coords.add(curve.station1.coord)
-                station_coords.add(curve.station2.coord)
-            for elem in station_coords:
-                f.write('%f %f\n' % (elem)) 
+                station_params.add((curve.station1.name, curve.station1.coord))
+                station_params.add((curve.station2.name, curve.station2.coord))
+            for elem in station_params:
+                f.write('%s %f %f\n' % (elem[0], elem[1][0],elem[1][1])) 
 
         with open(outdir+'/convex_hull_%02d.xy' % self.period,'w') as f:
-            station_coords = np.array(list(station_coords))
+            station_coords = np.array([elem[1] for elem in station_params])
             hull = ConvexHull(station_coords)
             for vertex in hull.vertices:
                 f.write('%f %f\n' % (station_coords[vertex][0], station_coords[vertex][1])) 

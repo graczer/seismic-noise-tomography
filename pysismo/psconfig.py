@@ -279,4 +279,5 @@ CHECKERBOARD_VMAX = config.getfloat('checkerboard', 'CHECKERBOARD_VMAX')
 CHECKERBOARD_PERIODS = json.loads(config.get('checkerboard', 'CHECKERBOARD_PERIODS')) 
 CHECKERBOARD_SQUARESIZES = json.loads(config.get('checkerboard', 'CHECKERBOARD_SQUARESIZES'))  
 
-CHECKERBOARD_EXPORT_TO_GMT = config.getfloat('checkerboard', 'CHECKERBOARD_EXPORT_TO_GMT')
+CHECKERBOARD_EXPORT_TO_GMT = config.getboolean('checkerboard', 'CHECKERBOARD_EXPORT_TO_GMT')
+
